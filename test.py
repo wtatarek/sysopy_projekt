@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import Mock, patch
 from queue import Queue
 import threading
-from dziala import *
+from main import *
 class TestMain(unittest.TestCase):
 
     def setUp(self):
