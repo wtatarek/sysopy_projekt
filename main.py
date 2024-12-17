@@ -78,7 +78,6 @@ class StudentManager(threading.Thread):
 
     def run(self):
 
-       # print(f"Student manager - running")
         for student in self.students:
             self.before_building_queue.put(Msg(MessageTypes.STUDENT, StudentData(student)))
             print(f"Student {student.student_id} comes to exam (is waiting before building) ")
@@ -109,7 +108,7 @@ class CommisionMember(threading.Thread):
 
 
     def run(self):
-        #print(f"Comission member - running")
+       
         while True:
             
             if self.evacuation_event.is_set() :
@@ -140,9 +139,9 @@ class ThinkingSpace(threading.Thread):
         self._stop_event = threading.Event()
 
     def run(self):
-        #print(f"ThinkingSpace - running")
+       
         while True:
-            #print(f"ThinkingSpace - running")
+            
             if self.evacuation_event.is_set() :
                 print(f"Thinking space received evacuation signal.")
                 self._stop_event.set()
@@ -310,10 +309,10 @@ class Commission(threading.Thread):
 def print_dean_results(student_grades):
     print("=== Final Results ===")
     for student_id, grades in student_grades.items():
-        # Access individual grades based on the type
+     
         practical_grade = grades['praktyczna']
         theoretical_grade = grades['teoretyczna']
-        # Print each student's grades
+     
         if practical_grade is not None or theoretical_grade is not None:
             print(f"Student ID: {student_id}, Practical Grade: {practical_grade}, Theoretical Grade: {theoretical_grade}")
     print("=====================")
@@ -335,7 +334,7 @@ class Dean(threading.Thread):
         self.student_number = student_number
         self.received_grades = 0
         self.choosed_field = choosed_field
-        #self.student_grades ={}
+   
         self.student_grades=student_grades
         self.k=k
         self.students = students
@@ -344,7 +343,7 @@ class Dean(threading.Thread):
         self.ending_thread = threading.Thread(target=self.send_ending_signal)
 
     def run(self):
-        #print(f"Dean - running")
+    
         
         self.evacuation_thread.start()
         self.ending_thread.start()
@@ -375,42 +374,39 @@ class Dean(threading.Thread):
 
         
         print("Dean: Starting to process grades.")
-        #print("...................................................")
+
         processed_ids = set() 
         while len(processed_ids) < count:
             if self.evacuation_event.is_set():
                 break
-            # print("len processed ids " +str( len(processed_ids)))
-            # print(" student nb to process : "+str( count))
+            
             try:
                 msg = self.dean_queue.get(timeout=1)
                 if msg.type == MessageTypes.STUDENT_GRADE:
-                    # print(" msg.type == MessageTypes.STUDENT_GRADE")
+               
                     student_grade = msg.data
                     student_id = student_grade.student.student_id
                     is_theory = student_grade.is_theory
                     passed_practical = student_grade.student.passed_practical
                     if passed_practical :
                         self.student_grades[student_id]['praktyczna']="passed earlier"
-                        # print("passed practical")
+                        
                         print(f"Dean: Student {student_grade.student.student_id } passed practical exam last time.")
 
                     if is_theory :
                             self.student_grades[student_id]['teoretyczna']=student_grade.grade
                             processed_ids.add(student_id)
-                            # print("ocena teoretyczna")
+                      
                             print(f"Dean: Processed theoretical grade for Student {student_grade.student.student_id}.")
                     else :
                             self.student_grades[student_id]['praktyczna']=student_grade.grade
                             if student_grade.grade == 2.0:
                                 processed_ids.add(student_id)
-                                # print("ocena praktyczna 2.0")
-                                # print(" ocena praktyczna")
+                              
                             print(f"Dean: Processed practical grade for Student {student_grade.student.student_id}.")
             except :
                 continue
-        # print("koniec procesowania ocen")
-       # print(f"GRADES FINISHED {self.student_grades}")
+
         if not self.evacuation_event.is_set():
             print("Dean: Received all grades. Sending ending signal.")
             self.ending_event.set()
@@ -428,9 +424,9 @@ class StudyFieldFilter(threading.Thread):
         self.ending_event=ending_event
         self._stop_event = threading.Event()
     def run(self):
-        #print("Study field filter - running")
+     
         while True:
-            #print("study field filter - running")
+            
             if self.evacuation_event.is_set():
                 print(f"Student manager received evacuation signal.")
                 break
@@ -444,15 +440,14 @@ class StudyFieldFilter(threading.Thread):
                     
                     self.field = self.choosed_field.get(timeout=1)
                     print(f"Study field filter : test has field : {self.field}")
-                    #print(self.field)
+                   
                 except:
                     continue
             if self.field == None:
                 continue
             else :
                 try :  
-                    # print("before building queue size : ")
-                    # print(self.before_building_queue.qsize())
+                    
                     msg = self.before_building_queue.get(timeout=1)
                   
                     if msg.type == MessageTypes.STUDENT and msg.data.student.field == self.field:
@@ -477,7 +472,6 @@ def main():
     students = generate_students(student_number,k)
 
 
-    #print(students)
 
     evacuation_event = threading.Event()
     ending_event = threading.Event()
