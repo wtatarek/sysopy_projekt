@@ -1,0 +1,84 @@
+Temat 13 – Egzamin - opis projektu
+
+Na wydziale X pewnej uczelni studiują studenci na K kierunkach (K>=5). Na każdym z kierunków
+studiuje Ni (80<=Ni<=160) studentów.
+Na wydziale ogłoszono egzamin dla studentów 2-ego roku, ale zapomniano podać nazwy kierunku.
+W związku z tym w danym dniu przed budynkiem wydziału zgromadzili się studenci z wszystkich K
+kierunków czekając w kolejce na wejście (studenci pojawiają się w losowych momentach czasu i ich
+liczba też jest losowana z podanego zakresu). Do zgromadzonych studentów dziekan wysłał
+wiadomość, że egzamin dotyczy studentów kierunku i (np.: kierunek 2). 
+
+Zrobiłam to tak,że mam funkcję generate_students której podaję Ni studentów i k kierunków . Ona generuje studentów i tworzy tabicę z nimi. Dalej tworzę kolejkę before_building_queue do której w randomowych momentach czasu funkcja StudentManager dodaje studentów . Mam kolejkę choosed_field do której po randomowym czasie dziekan dodaje field.Na dodanie field czeka StudyFieldFilter który gdy tylko field zostanie wybrany/dodany rozpoczyna dodawanie studentów do kolejki na egzamin praktyczny a tych nie dodanych(wysyła do domu)
+
+
+Studenci wskazanego
+kierunku wchodzą do budynku, pozostali studenci wracają do domu.
+Egzamin składa się z 2 części: części praktycznej (komisja A) i części teoretycznej (komisja B).
+
+Obie komisje teoretyczna i praktyczna są osobnym wątkiem
+
+Ta następne opisywane rzeczy znajdują się na zamieszczonym schemacie.
+
+Każda
+komisja składa się z 3 osób i przyjmuje w osobnym pokoju.
+
+Jest to zrobione za pomocą 3 wątków
+
+Każda z osób w komisji zadaje po jednym
+pytaniu, pytania są przygotowywane na bieżąco (co losową liczbę sekund) w trakcie egzaminu. 
+
+Jest za to odpowiedzialna Commision member - są zrobione trzy wątki dla każdego członka komisji
+
+Może
+zdarzyć się sytuacja w której, członek komisji spóźnia się z zadaniem pytania wówczas student czeka
+aż otrzyma wszystkie 3 pytania.
+
+Za to odpowiedzialne są mamber_queues które są 3 dla każdego członka
+
+Po otrzymaniu pytań student ma określony czas T na przygotowanie do odpowiedzi.
+
+Wtedy student wysyłany jest do thinking space za które odpowiedzialna jest funkcja ThinkingSpace . Są 3 thinking spaces ponieważ jednocześnie 3 studentów może się zastanwiać 
+
+Po tym czasie student udziela komisji odpowiedzi (jeżeli w tym czasie inny student
+siedzi przed komisją, musi zaczekać aż zwolni się miejsce), które są oceniane przez osobę w komisji,
+która zadała dane pytanie.
+
+Za to też odpowiedzalne są kolejki komisji
+
+Przewodniczący komisji (jedna z trzech osób) ustala ocenę końcową z
+danej części egzaminu (średnia arytmetyczna zaokrąglona w górę do skali ocen 5.0, 4.5, 4.0, 3.5,
+3.0, 2.0).
+
+Za 2 pierwszych członków komisji odpowiedzialne są funkcje handle1 i handle2 natomiast przewodniczący komisji to funkcja handle_last
+
+Do danej komisji może wejść jednocześnie maksymalnie 3 osoby.
+ 
+To zrobiłam za pomocą semafora 
+
+Zakładamy, że każdą z części
+egzaminu na ocenę pozytywną zdaje 95% studentów (ocena za każdą odpowiedź jest losowana,
+jeżeli student otrzymał przynajmniej jedną ocenę 2,0 nie zdał danej części egzaminu).
+
+Zasady przeprowadzania egzaminu:
+• Studenci w pierwszej kolejności zdają egzamin praktyczny.
+• Jeżeli student nie zdał części praktycznej nie podchodzi do części teoretycznej.
+Studentów najpierw wysyłam do kolejki na egzamin praktyczny dopiero komisja praktyczna (practical_comission) decyduje czy dodać studenta do kolejki teoretycznej jeżeli nie dostał nigdzie 2.0
+
+
+• Po pozytywnym zaliczeniu części praktycznej student staje w kolejce do komisji B.
+• Wśród studentów znajdują się osoby powtarzające egzamin, które mają już zaliczoną część
+praktyczną egzaminu (ok. 5% studentów) – takie osoby informują komisję A, że mają
+zaliczenie i zdają tylko część teoretyczną.
+• Ocenę końcową z zaliczenia egzaminu wystawia Dziekan po pozytywnym zaliczeniu obu
+części egzaminu – dane do Dziekana przesyłają przewodniczący komisji A i B.
+• Po wyjściu ostatniego studenta Dziekan publikuje listę studentów (id studenta) z otrzymanymi
+ocenami w komisji A i B oraz oceną końcową z egzaminu.
+
+Komisje dodają studentów do kolejki dziekana który w razie końca egzaminu lub ewakuacji wyświetla wszystkie oceny ale przetwarza je na bieżąco (pomija tych którzy nie zdali i nie dodaje ich do słownika student_grades
+
+
+Na komunikat (sygnał1) o ewakuacji – sygnał wysyła Dziekan - studenci natychmiast przerywają
+egzamin i opuszczają budynek wydziału – Dziekan publikuje listę studentów z ocenami, którzy wzięli
+udział w egzaminie.
+
+Sygnał ewakuacji robi dziekan po losowym czasie . Dziekan jest osobnym wątkiem. Klasa dziekan ma dwie funkcje send_evacuation_signal i send_ending_signal to są też dwa kolejne wątki . Pierwszy odpowiada za wysłanie sygnału ewakuacji po wybranym czasie . Drugi za najpierw wybranie kierunku a potem przetwarzanie studentów .Robię te dwie rzeczy po sobie ponieważ i tak nie można przetworzyć żadnego studenta gdy nie wiadomo jaki kierunek ma egzamin.
