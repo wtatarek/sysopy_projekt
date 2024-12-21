@@ -86,6 +86,7 @@ class Commission(threading.Thread):
         self.ending_event=ending_event
         self.theoretical = theoretical
         self._stop_event = threading.Event()
+    
 
         self.member_queues = [Queue() for _ in range(3)]
         self.thinking_spaces = [
@@ -109,10 +110,9 @@ class Commission(threading.Thread):
                 # TODO ma miec 95% na zdanie
                 #grade = random.choice([2.0, 3.0, 3.5, 4.0, 4.5, 5.0])
 
-        
 
                 grades_list = [2.0, 3.0, 3.5, 4.0, 4.5, 5.0]
-                weights = [0.05, 0.19, 0.19, 0.19, 0.19, 0.19]
+                weights = [0.5, 0.1, 0.1, 0.1, 0.1, 0.1]
 
                 grade = random.choices(grades_list, weights=weights, k=1)[0]
                 grades = data.grades + (grade,)
@@ -180,13 +180,11 @@ class Commission(threading.Thread):
 
 
     def run(self):
-      
         print(f"{'Theoretical' if self.theoretical else 'Practical'} commission -running")
         for member in self.members:
             member.start()
         for space in self.thinking_spaces:
             space.start()
-        
         print(f"{'Theoretical' if self.theoretical else 'Practical'} commission -running")
         msg = None
         while True:
@@ -239,7 +237,7 @@ class StudentRunner(threading.Thread):
         # po losowym czasie idzie na egzamin
 
         #   time.sleep(random.uniform(0, 5 * choose_waiting_time))
-            time.sleep(0.000000001)
+            time.sleep(0.000000000001)
 
             field = None
 
@@ -338,7 +336,6 @@ class StudentRunner(threading.Thread):
                 while True:
                     #if self.evacuation_event.is_set(timeout=1):
                     if self.evacuation_event.wait(timeout=1):
-                       
                         return
                     if not self.theoretical_commission.semaphore.acquire(timeout=1):
                         continue
@@ -517,13 +514,10 @@ class Dean(threading.Thread):
         self.ending_thread = threading.Thread(target=self.send_ending_signal)
 
     def run(self):
-        
-        
-        
+    
         
         self.evacuation_thread.start()
         self.ending_thread.start()
-        
 
         self.evacuation_thread.join()
         self.ending_thread.join()
@@ -535,10 +529,12 @@ class Dean(threading.Thread):
             if self.ending_event.is_set():
                 break
             time.sleep(10)
+            
            
         if not self.ending_event.is_set():
             print("Dean: Sending evacuation signal.")
             self.evacuation_event.set()
+            return
 
       
     def send_ending_signal(self):
@@ -556,8 +552,12 @@ class Dean(threading.Thread):
         
         print("Dean: Starting to process grades.")
 
+        
+        
         processed_ids = set() 
-        while len(processed_ids) < count:
+        timeout_limit = 20
+        no_message_time = 0
+        while True:
             if self.evacuation_event.is_set():
                 break
             
@@ -576,17 +576,19 @@ class Dean(threading.Thread):
 
                     if is_theory :
                             self.student_grades[student_id]['teoretyczna']=student_grade.grade
-                            processed_ids.add(student_id)
+                           
                       
                             print(f"Dean: Processed theoretical grade for Student {student_grade.student.student_id}.")
                     else :
                             self.student_grades[student_id]['praktyczna']=student_grade.grade
                             
-                            if student_grade.grade == 2.0:
-                                processed_ids.add(student_id)
-                                print("--------------------------------------------------------------------------------------------------------")
+                              
                             print(f"Dean: Processed practical grade for Student {student_grade.student.student_id}.")
+  
             except :
+                no_message_time +=1
+                if no_message_time >= timeout_limit:
+                    break
                 continue
 
         if not self.evacuation_event.is_set():
@@ -599,7 +601,8 @@ class Dean(threading.Thread):
         
 def main():
     #student_number = random.randint(80, 160)
-    student_number = 100
+    student_number = 30
+
     k = 5
     StudyField(k)
  
@@ -633,6 +636,7 @@ def main():
                                        evacuation_event,ending_event, theoretical=True)
     dean = Dean(students,dean_queue, evacuation_event,ending_event,student_number,student_grades,choosed_field,k)
     student_threads = [StudentRunner(student, practical_commision, theoretical_commision, evacuation_event) for student in students]
+
 
 
     # student_manager.start()
