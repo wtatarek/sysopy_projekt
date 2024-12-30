@@ -33,4 +33,11 @@ Mechanizm dziekana zapewnia dynamiczną zmianę kierunku egzaminowanego w trakci
 Odnośniki do kodu na GitHub
 
 1. Tworzenie i obsługa wątków
-threading.Thread: Użycie w klasach takich jak StudentRunner, Commission, ThinkingSpace.
+threading.Thread: Użycie w klasach takich jak StudentRunner
+[Linie 227-339 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L227-L339)
+
+
+Commission,
+
+ThinkingSpace.
+
