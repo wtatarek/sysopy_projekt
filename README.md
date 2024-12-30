@@ -33,23 +33,66 @@ Mechanizm dziekana zapewnia dynamiczną zmianę kierunku egzaminowanego w trakci
 Odnośniki do kodu na GitHub
 
 1. Tworzenie i obsługa wątków
-threading.Thread: Użycie w klasach takich jak StudentRunner
-[Linie 227-399 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L227-L399)
+    threading.Thread: Użycie w klasach takich jak StudentRunner
+    [Linie 227-399 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L227-L399)
 
-Commission
-[Linie 76-223 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L76-L223)
+    Commission
+    [Linie 76-223 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L76-L223)
 
-ThinkingSpace
-[Linie 443-478 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L443-L478)
+    ThinkingSpace
+    [Linie 443-478 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L443-L478)
 
-Dean
-[Linie 503-594 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L503-L594)
+    Dean
+    [Linie 503-594 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L503-L594)
 
-CommisionMember
-[Linie 411-440 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
+    CommisionMember
+    [Linie 411-440 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
 
 
 
 2. Tworzenie i obsługa plików
+
+
+3. Synchronizacja procesów/wątków
+    threading.Semaphore:
+
+    Linia: semaphore_practical = threading.Semaphore(3).
+    [Linia 610 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L610)
+
+    Linia: semaphore_theoretical = threading.Semaphore(3)
+    [Linia 611 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L611)
+
+
+    threading.Event:
+
+    Linia: evacuation_event = threading.Event().
+    [Linia 600 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L600)
+
+    Linia: ending_event = threading.Event().
+    [Linia 600 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L601)
+
+    Linia: choosing_field_event = threading.Event().
+    [Linia 600 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L602)
+
+4. Łącza nazwane i nienazwane
+
+    queue.Queue: Przykłady: 
+    practical_queue = Queue()
+    theoretical_queue = Queue()
+    dean_queue = Queue()
+    result_queue = Queue()
+
+    [Linie 604-607 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
+
+5. Kolejki komunikatów
+    queue.Queue: Użyte w komunikacji między studentami a komisjami.
+    Przykłady: 
+    practical_queue = Queue()
+    theoretical_queue = Queue()
+    dean_queue = Queue()
+    result_queue = Queue()
+
+    [Linie 604-607 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
+
 
 

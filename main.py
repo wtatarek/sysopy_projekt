@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 from queue import Queue
 from typing import List, Any
+import os
 
 choose_waiting_time = 0.0001
 
@@ -652,6 +653,31 @@ def main():
 
     print_dean_results(student_grades)
 
+
+    output = []
+    output.append(f"chosen field: {dean.field}")
+    output.append("ALL STUDENTS")
+    output.append("=========================================================")
+    output.extend([str(s) for s in students])
+    output.append("=========================================================")
+    output.append("STUDENTS WHO TOOK EXAM")
+    output.append("=========================================================")
+    output.extend([str(s) for s in students if s.field == dean.field])
+    output.append("=========================================================")
+    output.append("=== Final Results ===")
+    for student_id, grades in student_grades.items():
+        practical_grade = grades['praktyczna']
+        theoretical_grade = grades['teoretyczna']
+        if practical_grade is not None or theoretical_grade is not None:
+            output.append(f"Student ID: {student_id}, Practical Grade: {practical_grade}, Theoretical Grade: {theoretical_grade}")
+    output.append("=====================")
+
+    # Write results to a file
+    file_name = "wyniki.txt"
+    with open(file_name, 'w') as f:
+        f.write("\n".join(output))
+    
+    print(f"Results have been written to {file_name}")
     print("koniec")
 
 
