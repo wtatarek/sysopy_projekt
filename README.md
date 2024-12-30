@@ -34,10 +34,22 @@ Odnośniki do kodu na GitHub
 
 1. Tworzenie i obsługa wątków
 threading.Thread: Użycie w klasach takich jak StudentRunner
-[Linie 227-339 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L227-L339)
+[Linie 227-399 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L227-L399)
+
+Commission
+[Linie 76-223 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L76-L223)
+
+ThinkingSpace
+[Linie 443-478 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L443-L478)
+
+Dean
+[Linie 503-594 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L503-L594)
+
+CommisionMember
+[Linie 411-440 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
 
 
-Commission,
 
-ThinkingSpace.
+2. Tworzenie i obsługa plików
+
 

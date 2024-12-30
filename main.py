@@ -106,11 +106,7 @@ class Commission(threading.Thread):
             elif msg.type == MessageTypes.STUDENT_ANSWERING:
                 data = msg.data
                 time.sleep(choose_waiting_time)
-                # TODO ma miec 95% na zdanie
-                #grade = random.choice([2.0, 3.0, 3.5, 4.0, 4.5, 5.0])
-
         
-
                 grades_list = [2.0, 3.0, 3.5, 4.0, 4.5, 5.0]
                 weights = [0.05, 0.19, 0.19, 0.19, 0.19, 0.19]
 
@@ -324,15 +320,9 @@ class StudentRunner(threading.Thread):
 
             print(msg)
 
-            # TODO jak zdal to tak samo z druga komisja
-
 
             self.practical_commission.semaphore.release()
 
-            # print("...................................")
-            # print( msg.data.grades )
-            # print("...................................")
-            # --------------------------------------------------------------------------------------------------------------------------------
             if msg.data.grade > 2.0 or msg.data.student.passed_practical:
                 print("zdałem")
                 while True:
@@ -623,9 +613,6 @@ def main():
     before_building_queue =Queue()
     choosed_field=Queue()
 
-
-    # student_manager = StudentManager(students, before_building_queue,evacuation_event,ending_event)
-    # study_field_filter = StudyFieldFilter(before_building_queue,practical_queue,choosed_field,evacuation_event,ending_event)
  
     practical_commision = Commission(semaphore_practical, practical_queue, theoretical_queue, dean_queue,
                                      evacuation_event,ending_event, theoretical=False)
@@ -643,17 +630,13 @@ def main():
     practical_commision.start()
     theoretical_commision.start()
     dean.start()
-    # study_field_filter.start()
 
-    
-
-    # student_manager.join()
     practical_commision.join()
     theoretical_commision.join()
     dean.join()
     for st in student_threads:
         st.join()
-    # study_field_filter.join()
+   
 
 
     print("chosen field", dean.field)
