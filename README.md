@@ -51,6 +51,11 @@ Odnośniki do kodu na GitHub
 
 
 2. Tworzenie i obsługa plików
+    użycie modułu os
+
+    [Linie 657-678 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L657-L678)
+
+
 
 
 3. Synchronizacja procesów/wątków
