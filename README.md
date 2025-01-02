@@ -42,7 +42,7 @@ Odnośniki do kodu na GitHub
     [Linie 434-491 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L434-L491)
 
     Dean
-    [Linie 493-586 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L593-L586)
+    [Linie 493-586 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L493-L586)
 
     CommisionMember
     [Linie 402-432 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L402-L432)
@@ -70,13 +70,13 @@ Odnośniki do kodu na GitHub
     threading.Event:
 
     Linia: evacuation_event = threading.Event().
-    [Linia 601 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L600)
+    [Linia 601 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L601)
 
     Linia: ending_event = threading.Event().
-    [Linia 602 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L601)
+    [Linia 602 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L602)
 
     Linia: choosing_field_event = threading.Event().
-    [Linia 603 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L602)
+    [Linia 603 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L603)
 
 
 Główne elementy programu
