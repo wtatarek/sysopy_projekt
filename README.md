@@ -42,7 +42,7 @@ Odnośniki do kodu na GitHub
     [Linie 434-491 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L434-L491)
 
     Dean
-    [Linie 593-586 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L593-L586)
+    [Linie 493-586 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L593-L586)
 
     CommisionMember
     [Linie 402-432 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L402-L432)
