@@ -33,19 +33,19 @@ Odnośniki do kodu na GitHub
 
 1. Tworzenie i obsługa wątków
     threading.Thread: Użycie w klasach takich jak StudentRunner
-    [Linie 224-399 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L227-L399)
+    [Linie 224-399 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L224-L399)
 
     Commission
     [Linie 76-223 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L76-L223)
 
     ThinkingSpace
-    [Linie 434-491 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L443-L478)
+    [Linie 434-491 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L434-L491)
 
     Dean
-    [Linie 593-586 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L503-L594)
+    [Linie 593-586 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L593-L586)
 
     CommisionMember
-    [Linie 402-432 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
+    [Linie 402-432 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L402-L432)
 
 
 
@@ -61,10 +61,10 @@ Odnośniki do kodu na GitHub
     threading.Semaphore:
 
     Linia: semaphore_practical = threading.Semaphore(3).
-    [Linia 611 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L610)
+    [Linia 611 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L611)
 
     Linia: semaphore_theoretical = threading.Semaphore(3)
-    [Linia 612 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L611)
+    [Linia 612 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L612)
 
 
     threading.Event:
