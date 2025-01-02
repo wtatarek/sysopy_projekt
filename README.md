@@ -80,6 +80,10 @@ Odnośniki do kodu na GitHub
 
 
 Główne elementy programu
+    
+    
+    
+    
     1.Klasy i struktury danych
         MessageTypes: Enum definiujący różne typy wiadomości przesyłanych między wątkami.
         Msg: Klasa przechowująca typ wiadomości oraz dane.
