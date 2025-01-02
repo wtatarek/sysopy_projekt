@@ -1,14 +1,13 @@
 Temat 13 – Egzamin - opis projektu
 
 Zrobiłam dwie wersje projektu : 
-1. wersja gdzie studenci są zwykłą klasą znajdujące się w pliku rozwiązanie2.py do którego testy są w pliku test_rozwiązanie2.py
-2. wersja bardziej zgodna z wymogami zadania gdzie studenci są wątkami znajdująca się w pliku main.py
+1. wersja gdzie pula wątków wykonuje kod studenta, a student to "dane" znajdująca się w pliku rozwiązanie2.py do którego testy są w pliku test_rozwiązanie2.py 
+2. wersja bardziej zgodna z wymogami zadania gdzie wątek studenta robi wszystko po kolei znajdująca się w pliku main.py do którego testy są w pliku test_main.py
 
-Poniżej znajduje się opis rozwiązania znajdującego się w main.py :
+Poniżej znajduje się opis rozwiązania znajdującego się w main.py która jest wersją bardziej zgodną z wymogami:
 
 Założenia projektowe
-Projekt symuluje egzaminowanie studentów przez komisję, uwzględniając egzaminy praktyczne i teoretyczne, synchronizację z użyciem wątków i procesów oraz obsługę zdarzeń ewakuacyjnych i zakończenia.
-
+Projekt symuluje egzaminowanie studentów przez komisję, uwzględniając egzaminy praktyczne i teoretyczne oraz obsługę zdarzeń ewakuacyjnych i zakończenia.
 
 Ogólny opis kodu
 Kod tworzy strukturę symulacji, w której:
@@ -79,25 +78,69 @@ Odnośniki do kodu na GitHub
     Linia: choosing_field_event = threading.Event().
     [Linia 600 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L602)
 
-4. Łącza nazwane i nienazwane
 
-    queue.Queue: Przykłady: 
-    practical_queue = Queue()
-    theoretical_queue = Queue()
-    dean_queue = Queue()
-    result_queue = Queue()
+Główne elementy programu
+    1.Klasy i struktury danych
+        MessageTypes: Enum definiujący różne typy wiadomości przesyłanych między wątkami.
+        Msg: Klasa przechowująca typ wiadomości oraz dane.
+        StudyField: Klasa reprezentująca kierunki studiów, które mogą być wybierane przez studentów.
+        Student: Klasa reprezentująca studenta, który ma ID, informację, czy zaliczył egzamin praktyczny, oraz kierunek studiów.
+        Klasa reprezentuje tylko dane studenta a za faktyczne zachowanie każdego studenta odpowiada StudentRunner
+        StudentData: Klasa przechowująca dane studenta, pytania egzaminacyjne oraz oceny.
+        StudentGrade: Klasa przechowująca oceny studenta i informację, czy egzamin był teoretyczny.
 
-    [Linie 604-607 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
+    2.Generowanie studentów
+        Funkcja generate_students generuje listę studentów, przypisuje im losowe ID, kierunek studiów oraz informację, czy zaliczyli wcześniej egzamin praktyczny.
 
-5. Kolejki komunikatów
-    queue.Queue: Użyte w komunikacji między studentami a komisjami.
-    Przykłady: 
-    practical_queue = Queue()
-    theoretical_queue = Queue()
-    dean_queue = Queue()
-    result_queue = Queue()
+    3.Działanie komisji egzaminacyjnej
+        Klasa Commission reprezentuje komisję egzaminacyjną (praktyczną lub teoretyczną).
+        Każda komisja składa się z trzech członków (CommisionMember). ComissionMember działa podobnie do modelu aktora - przyjmuje wiadomości z kolejki i je obsługuje a potem odsyła dalej
+        Każda komisja (praktyczna i teoretyczna) jest odpalana w osobnym wątku. Wewnątrz komisji każdy członek komisji (3) jest odpalany w osobnym wątku.
+        
 
-    [Linie 604-607 w main.py](https://github.com/wtatarek/sysopy_projekt/blob/main/main.py#L411-L440)
+    4.Zachowanie studentów
+        Klasa StudentRunner reprezentuje zachowanie studenta.
+        Student sprawdza, czy jego kierunek ma egzamin (sygnał od dziekana).
+        Przechodzi proces egzaminu praktycznego i, jeśli zdał, egzamin teoretyczny.
+        Żeby na raz w pokoju komisji nie było więcej niż 3 osoby mam dwa semafory o          pojemności 3 jeden do komisji praktycznej i jeden do teoretycznej .Zanim w klasie StudentRunner student zostanie dodany do kolejki pierwszego egzaminatora danej komisji używam acquire dla odpowiedniego semfora komisji . Semafor zwalniam za pomocą release gdy student odpowie na ostatnie pytanie
+        Gdy student odpowie na wszystkie pytania - wysyła swoje odpowiedzi i czeka na ocenę.
+        W przypadku ewakuacji (sygnał od dziekana) student opuszcza egzamin.
+
+    5.Koordynacja przez dziekana
+        Klasa Dean:
+        Losuje kierunek, który przystąpi do egzaminu.
+        Monitoruje oceny studentów, zbiera wyniki z komisji, i decyduje o zakończeniu egzaminu.
+        Może wysłać sygnał ewakuacji, jeśli czas egzaminu przekroczy ustalony limit.
+        Wyniki wszystkich studentów (zarówno tych, którzy zdali, jak i tych, którzy nie podeszli do egzaminu) są zapisywane w strukturze danych.
+
+    6.Zapis wyników do pliku
+        Na koniec programu, wyniki są zapisywane do pliku tekstowego (wyniki.txt). Zawartość pliku obejmuje:
+        Wylosowany kierunek (pole "chosen field").
+        Listę wszystkich studentów.
+        Listę studentów, którzy podeszli do egzaminu.
+        Finalne wyniki egzaminów teoretycznych i praktycznych.
+
+    7. Funkcje dodatkowe
+        broadcast_to_all_students: Rozsyła wiadomości do wszystkich studentów.
+        print_dean_results: Wyświetla finalne wyniki studentów.
+        count_students_with_field: Zlicza studentów przypisanych do danego kierunku.
 
 
+ ---------------------------------------------------------------------------------------------------------------------------
+
+
+Jeżeli chodzi o rozwiązanie znajdujące się w pliku rozwiazanie2.py to jest ono podobne z tym że pula wątków" wykonuje kod studenta, a student to "dane" 
+
+Wizualny opis działania komisji w tym rozwiązaniu znajduje się w pliku schemat_komisji.jpg
+Klasa Commission reprezentuje komisję egzaminacyjną (praktyczną lub teoretyczną).
+Każda komisja składa się z trzech członków (CommisionMember) oraz trzech "miejsc do myślenia" (ThinkingSpace), które symulują proces odpowiadania na pytania przez studentów.
+Każda komisja (praktyczna i teoretyczna) jest odpalana w osobnym wątku. Wewnątrz komisji każdy członek komisji (3) jest odpalany w osobnym wątku a także każda strefa myślenia (3) jest odpalana w osobnym wątku.
+
+Rozwiązanie zawiera dodatkowe klasy:
+
+    StudentManager - tworzy studentów na bierząco i dodaje ich do kolejki przed bydynkiem
+
+    StudyFieldFilter - sprawdza czy studenci którzy ustawiają się w kolowym czasie przed budynkiem mogą być dodani do kolejki na egzamin praktyczny (są właściwego kierunku)
+
+To rozwiązanie działa tak że “pula wątków” wykonuje kod studenta a student to “dane”
 
