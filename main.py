@@ -89,10 +89,10 @@ class Commission(threading.Thread):
         self._stop_event = threading.Event()
 
         self.member_queues = [Queue() for _ in range(3)]
-        self.thinking_spaces = [
-            ThinkingSpace(self.thinking_queue, self.member_queues[0],self.evacuation_event,self.ending_event, thread_id=i, name=str(theoretical) + str(i)) for i
-            in range(3)
-        ]
+        # self.thinking_spaces = [
+        #     ThinkingSpace(self.thinking_queue, self.member_queues[0],self.evacuation_event,self.ending_event, thread_id=i, name=str(theoretical) + str(i)) for i
+        #     in range(3)
+        # ]
 
         def handle_questions_answers(msg: Msg) -> StudentData:
             if msg is None or msg.data is None:
@@ -181,8 +181,8 @@ class Commission(threading.Thread):
         print(f"{'Theoretical' if self.theoretical else 'Practical'} commission -running")
         for member in self.members:
             member.start()
-        for space in self.thinking_spaces:
-            space.start()
+        # for space in self.thinking_spaces:
+        #     space.start()
         
         print(f"{'Theoretical' if self.theoretical else 'Practical'} commission -running")
         msg = None
@@ -215,8 +215,8 @@ class Commission(threading.Thread):
 
         for member in self.members:
             member.join()
-        for space in self.thinking_spaces:
-            space.join()
+        # for space in self.thinking_spaces:
+        #     space.join()
         print(f"{'Theoretical' if self.theoretical else 'Practical'} commission finished.")
 
 
