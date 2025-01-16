@@ -156,16 +156,24 @@ class Commission(threading.Thread):
                         StudentGrade(student, final_grade, self.theoretical)
                     )
                 )
-                if final_grade != 2.0:
-                    key = new_data.student.student_id
-                    student_id_to_queue[key].put(
-                        Msg(
-                            MessageTypes.STUDENT_GRADE,
-                            StudentGrade(student, final_grade, self.theoretical)
-                        )
-                    )
-                    
-                self.semaphore.release()
+                # if final_grade != 2.0:
+                #     key = new_data.student.student_id
+                #     student_id_to_queue[key].put(
+                #         Msg(
+                #             MessageTypes.STUDENT_GRADE,
+                #             StudentGrade(student, final_grade, self.theoretical)
+                #         )
+                #     )
+                
+                key = new_data.student.student_id
+                student_id_to_queue[key].put(
+                         Msg(
+                             MessageTypes.STUDENT_GRADE,
+                             StudentGrade(student, final_grade, self.theoretical)
+                         )
+                     )
+
+                #self.semaphore.release()
 
         # Tworzenie członków komisji
         self.members = [
@@ -388,6 +396,8 @@ class StudentRunner(threading.Thread):
                     )
                 )
                 msg = _await_msg_type(MessageTypes.STUDENT_GRADE)
+                print(msg)
+                self.theoretical_commission.semaphore.release()
 
             
 
