@@ -441,43 +441,6 @@ class CommisionMember(threading.Thread):
             self.handler(msg)
 
 
-# class ThinkingSpace(threading.Thread):
-#     def __init__(self, shared_queue, output_queue,evacuation_event, ending_event, thread_id, name=None):
-#         super().__init__()
-#         self.shared_queue = shared_queue
-#         self.output_queue = output_queue
-#         self.thread_id = thread_id
-#         self.name = name
-#         self.evacuation_event=evacuation_event
-#         self.ending_event=ending_event
-#         self._stop_event = threading.Event()
-
-#     def run(self):
-       
-#         while True:
-            
-#             if self.evacuation_event.is_set() :
-#                 print(f"Thinking space received evacuation signal.")
-#                 self._stop_event.set()
-#                 break
-#             if self.ending_event.is_set():
-#                 print(f"Thinking space received ending signal.")
-#                 self._stop_event.set()
-#                 break
-#             try:
-#                 msg = self.shared_queue.get(timeout=1)
-
-#                 print(f"[ThinkingSpace {self.name}] Student '{msg.data.student.student_id}' myśli nad odpowiedziami.")
-#                 time.sleep(choose_waiting_time)  
-#                 self.output_queue.put(
-#                     Msg(
-#                         MessageTypes.STUDENT_ANSWERING,
-#                         msg.data
-#                     )
-#                 )
-#             except Exception:
-#                 continue
-
 
 
 
